@@ -67,6 +67,12 @@ function! searchhi#update(...) range
 
     let query = @/
 
+    " When query begins with `^` the `CurrentSearch` group is not applied
+    " This seems to be because `\%c` doesn't match the correct column
+    if !empty(query)
+        let query = substitute(query, "^\^", "", "")
+    endif
+
     if exists('g:searchhi_force_ignorecase')
         let search_query = query . '\c'
     else
